@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -27,7 +29,14 @@ class WeatherFragment : Fragment() {
     private lateinit var windDegreeTV: TextView
     private lateinit var windSpeedTV: TextView
     private lateinit var pressureTV: TextView
+    private var city: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            city = it.getString("city")
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -54,7 +63,7 @@ class WeatherFragment : Fragment() {
         GlobalScope.launch(Dispatchers.IO) {
             val response = try {
                 RetrofitInstance.api.getCurrentWeather(
-                    "Тольятти",
+                    city!!,
                     "metric",
                     requireContext().getString(R.string.api_key)
                 )
