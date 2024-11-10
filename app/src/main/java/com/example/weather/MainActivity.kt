@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import com.example.weather.utils.RetrofitInstance
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -37,48 +38,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        cityTV = findViewById(R.id.cityTV)
-        temperatureTV = findViewById(R.id.temperatureTV)
-        weatherIV = findViewById(R.id.weatherIV)
-        windDegreeTV = findViewById(R.id.windDegreeTV)
-        windSpeedTV = findViewById(R.id.windSpeedTV)
-        pressureTV = findViewById(R.id.pressureTV)
-
-        getCurrentWeather()
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    @SuppressLint("SetTextI18n")
-    private fun getCurrentWeather() {
-        GlobalScope.launch(Dispatchers.IO) {
-            val response = try {
-                RetrofitInstance.api.getCurrentWeather(
-                    "Тольятти",
-                    "metric",
-                    applicationContext.getString(R.string.api_key)
-                )
-            } catch (e: IOException) {
-                Toast.makeText(this@MainActivity, "Ошибка ${e.message}", Toast.LENGTH_LONG).show()
-                return@launch
-            } catch (e:HttpException) {
-                Toast.makeText(this@MainActivity, "Ошибка ${e.message}", Toast.LENGTH_LONG).show()
-                return@launch
-            }
-            if (response.isSuccessful && response.body() != null) {
-                withContext(Dispatchers.Main) {
-                    val data = response.body()
-                    cityTV.text = data!!.name
-                    temperatureTV.text = "${data.main.temp}°C"
-                    windDegreeTV.text = "${data.wind.deg}"
-                    windSpeedTV.text = "${data.wind.speed} м/с"
-                    val convertPressure = (data.main.pressure / 1.33)
-                    pressureTV.text = convertPressure.toString()
-                    val iconId = data.weather[0].icon
-                    val imageUrl = "https://openweathermap.org/img/wn/$iconId@4x.png"
-                    Picasso.get().load(imageUrl).into(weatherIV)
-                }
-            }
-        }
+supportFragmentManager.beginTransaction()
+    .add(R.id.main, WeatherFragment())
+    .commit()
     }
 }
