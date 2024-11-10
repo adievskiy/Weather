@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 
 class CityFragment : Fragment() {
-
     private lateinit var inputCity: EditText
     private lateinit var startBTN: Button
 

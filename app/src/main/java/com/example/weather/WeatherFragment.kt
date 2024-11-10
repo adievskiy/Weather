@@ -37,6 +37,7 @@ class WeatherFragment : Fragment() {
             city = it.getString("city")
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -53,7 +54,6 @@ class WeatherFragment : Fragment() {
         windDegreeTV = view.findViewById(R.id.windDegreeTV)
         windSpeedTV = view.findViewById(R.id.windSpeedTV)
         pressureTV = view.findViewById(R.id.pressureTV)
-
         getCurrentWeather()
     }
 
