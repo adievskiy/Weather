@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,11 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.weather.R
 import com.example.weather.utils.RetrofitInstance
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -29,6 +28,7 @@ class WeatherFragment : Fragment() {
     private lateinit var windDegreeTV: TextView
     private lateinit var windSpeedTV: TextView
     private lateinit var pressureTV: TextView
+    private lateinit var maxMinTV: TextView
     private var city: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +54,8 @@ class WeatherFragment : Fragment() {
         windDegreeTV = view.findViewById(R.id.windDegreeTV)
         windSpeedTV = view.findViewById(R.id.windSpeedTV)
         pressureTV = view.findViewById(R.id.pressureTV)
+        maxMinTV = view.findViewById(R.id.maxMinTV)
+
         getCurrentWeather()
     }
 
@@ -86,12 +88,26 @@ class WeatherFragment : Fragment() {
             if (response.isSuccessful && response.body() != null) {
                 withContext(Dispatchers.Main) {
                     val data = response.body()
-                    cityTV.text = data!!.name
-                    temperatureTV.text = "${data.main.temp}°C"
-                    windDegreeTV.text = "${data.wind.deg}"
+                    val deg = data!!.wind.deg
+                    var degree = ""
+                    when (deg) {
+                        in 338..360 -> degree = "С"
+                        in 0..22 -> degree = "С"
+                        in 23..67 -> degree = "СВ"
+                        in 68..112 -> degree = "З"
+                        in 113..157 -> degree = "ЮВ"
+                        in 158..202 -> degree = "Ю"
+                        in 203..247 -> degree = "ЮЗ"
+                        in 248..292 -> degree = "З"
+                        in 293..337 -> degree = "СЗ"
+                    }
+                    cityTV.text = data.name
+                    temperatureTV.text = "${data.main.temp}°"
+                    maxMinTV.text = "Макс: ${data.main.temp_max}°, Мин: ${data.main.temp_min}°"
+                    windDegreeTV.text = "${data.wind.deg}° $degree"
                     windSpeedTV.text = "${data.wind.speed} м/с"
-                    val convertPressure = (data.main.pressure / 1.33).toInt()
-                    pressureTV.text = convertPressure.toString()
+                    val convertPressure = (data.main.pressure / 1.33).toInt().toString()
+                    pressureTV.text = "$convertPressure мм рт.ст."
                     val iconId = data.weather[0].icon
                     val imageUrl = "https://openweathermap.org/img/wn/$iconId@4x.png"
                     Picasso.get().load(imageUrl).into(weatherIV)

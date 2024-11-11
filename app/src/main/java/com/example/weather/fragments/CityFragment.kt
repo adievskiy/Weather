@@ -1,4 +1,4 @@
-package com.example.weather
+package com.example.weather.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import com.example.weather.R
 
 class CityFragment : Fragment() {
     private lateinit var inputCity: EditText
@@ -32,7 +33,7 @@ class CityFragment : Fragment() {
                 }
             }
             requireFragmentManager().beginTransaction()
-                .replace(R.id.main, weatherFragment)
+                .replace(R.id.weather, weatherFragment)
                 .commit()
         }
     }

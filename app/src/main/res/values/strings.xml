@@ -4,8 +4,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textCityTV">Город</string>
-    <string name="textTemperatureTV">t°C</string>
-    <string name="textWindDegreeTV">Направление</string>
-    <string name="textWindSpeedTV">Скорость</string>
-    <string name="textPressureTV">Атмосферное давление</string>
+    <string name="textTemperatureTV">9°</string>
+    <string name="textWindDegreeTitleTV">Направление</string>
+    <string name="textWindSpeedTitleTV">Скорость</string>
+    <string name="textPressureTitleTV">Атмосферное давление</string>
+    <string name="textTitleTV">ПРОГНОЗ ПОГОДЫ</string>
+    <string name="textDescriptionTV">Текст всякий про приложуху</string>
+    <string name="textGoToWeatherBTN">Начать пользоваться</string>
+    <string name="titleMenuExit">Выход</string>
+    <string name="textWindSpeedTV">15 м/с</string>
+    <string name="textWindDegreeTV">300° ССЗ</string>
+    <string name="textPressureTV">770 мм рт.ст.</string>
 </resources>
